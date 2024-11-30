@@ -4,8 +4,16 @@
   "description": "Microservice for managing authentication API requests",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon ./index.ts",
     "test": "npm run test"
   },
   "author": "Thiago M Tolotti",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "typescript": "^5.7.2"
+  }
 }
