@@ -4,6 +4,7 @@ import refresh_token from "./routes/refresh_token";
 import create_password_email from "./routes/create_password_email";
 import forgot_password_email from "./routes/forgot_password_email";
 import password from "./routes/password";
+import change_password from "./routes/change_password";
 
 const port = 3000;
 const app = express();
@@ -37,7 +38,7 @@ app.post("/create_password_email", create_password_email);
 app.post("/forgot_password_email", forgot_password_email);
 
 app.post("/password", password);
-app.post("/change_password");
+app.post("/change_password", change_password);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

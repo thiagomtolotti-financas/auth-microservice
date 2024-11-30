@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import isRequestAuthenticated from "../utils/isRequestAuthenticated";
 
 export default function refresh_token(req: Request, res: Response) {
   if (!isRequestAuthenticated(req)) {
@@ -7,18 +8,4 @@ export default function refresh_token(req: Request, res: Response) {
   }
 
   res.send("access_token");
-}
-
-function isRequestAuthenticated(req: Request): boolean {
-  if (!req.headers.authorization) {
-    return false;
-  }
-
-  const [type, access_token] = req.headers.authorization.split(" ");
-
-  if (type !== "Bearer") return false;
-
-  // TODO: Validate access_token in DB
-
-  return true;
 }
