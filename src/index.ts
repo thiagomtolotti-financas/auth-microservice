@@ -1,5 +1,6 @@
 import express from "express";
 import login from "./routes/login";
+import refresh_token from "./routes/refresh_token";
 
 const port = 3000;
 const app = express();
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", login);
-app.post("/refresh_token");
+app.post("/refresh_token", refresh_token);
 
 app.post("/create_password_email");
 app.post("/forgot_password_email");
