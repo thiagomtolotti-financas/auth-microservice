@@ -1,7 +1,10 @@
 import express from "express";
+import login from "./routes/login";
 
 const port = 3000;
 const app = express();
+
+app.use(express.json());
 
 // Endpoints
 /*
@@ -22,7 +25,7 @@ app.get("/", (req, res) => {
   res.send("Microservice is online");
 });
 
-app.post("/login");
+app.post("/login", login);
 app.post("/refresh_token");
 
 app.post("/create_password_email");

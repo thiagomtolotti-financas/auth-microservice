@@ -4,7 +4,7 @@
   "description": "Microservice for managing authentication API requests",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.ts",
+    "dev": "nodemon ./src/index.ts",
     "test": "npm run test"
   },
   "author": "Thiago M Tolotti",
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "nodemon": "^3.1.7",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "zod": "^3.23.8"
   }
 }
