@@ -1,0 +1,11 @@
+{
+  "name": "auth-microservice",
+  "version": "1.0.0",
+  "description": "Microservice for managing authentication API requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "Thiago M Tolotti",
+  "license": "ISC"
+}
