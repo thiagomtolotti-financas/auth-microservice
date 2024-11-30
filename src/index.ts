@@ -3,11 +3,14 @@ import login from "./routes/login";
 import refresh_token from "./routes/refresh_token";
 import create_password_email from "./routes/create_password_email";
 import forgot_password_email from "./routes/forgot_password_email";
+import password from "./routes/password";
 
 const port = 3000;
 const app = express();
 
 app.use(express.json());
+
+// TODO: Ensure requests body has exactly the necessary fields
 
 // Endpoints
 /*
@@ -33,7 +36,7 @@ app.post("/refresh_token", refresh_token);
 app.post("/create_password_email", create_password_email);
 app.post("/forgot_password_email", forgot_password_email);
 
-app.post("/password");
+app.post("/password", password);
 app.post("/change_password");
 
 app.listen(port, () => {
