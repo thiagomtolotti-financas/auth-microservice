@@ -5,11 +5,23 @@ import create_password_email from "./routes/create_password_email";
 import forgot_password_email from "./routes/forgot_password_email";
 import password from "./routes/password";
 import change_password from "./routes/change_password";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 const port = 3000;
 const app = express();
 
 app.use(express.json());
+
+dotenv.config();
+
+// Initializes the database
+mongoose.connect(process.env.DATABASE_URL!);
+const db = mongoose.connection;
+
+db.on("error", (err) => {
+  console.error(`Error connecting to database`, err);
+});
 
 // Endpoints
 /*
