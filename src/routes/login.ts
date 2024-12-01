@@ -4,6 +4,11 @@ import passwordSchema from "../schemas/zod/passwordSchema";
 import bcrypt from "bcrypt";
 import UserModel, { User } from "../models/UserModel";
 import { sign } from "jsonwebtoken";
+import errors, {
+  InvalidEmailOrPasswordError,
+  PasswordNotRegisteredError,
+  UserNotFoundError,
+} from "../errors";
 
 const EXPIRATION_TIME_IN_SECONDS = 60 * 60 * 12;
 
@@ -25,8 +30,15 @@ export default async function login(req: Request, res: Response) {
 
     res.send({ ...tokens, email });
   } catch (err) {
-    // TODO: Handle errors
-    res.status(400).send((err as Error).message);
+    const error = errors.find((e) => err instanceof e);
+
+    if (error) {
+      res.status(400).send((err as Error).message);
+      return;
+    }
+
+    console.error(err);
+    res.status(500).send("Internal Server Errror");
   }
 }
 
@@ -44,13 +56,12 @@ function validateBody(body: unknown) {
 async function findUser(email: string, password: string) {
   const user = await UserModel.findOne({ email });
 
-  // TODO: Make custom errors
-  if (!user) throw new Error("User not found");
-  if (!user.password) throw new Error("User password not registered");
+  if (!user) throw new UserNotFoundError();
+  if (!user.password) throw new PasswordNotRegisteredError();
 
   const isPasswordRight = await bcrypt.compare(password, user.password);
 
-  if (!isPasswordRight) throw new Error("Invalid email or password");
+  if (!isPasswordRight) throw new InvalidEmailOrPasswordError();
 
   return user;
 }
