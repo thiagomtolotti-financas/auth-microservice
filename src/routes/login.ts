@@ -67,11 +67,11 @@ async function findUser(email: string, password: string) {
 }
 
 function generateTokens(user: User) {
-  const access_token = sign({ user_id: user.id }, "SECRET", {
+  const access_token = sign({ user_id: user.id }, process.env.JWT_SECRET!, {
     expiresIn: EXPIRATION_TIME_IN_SECONDS,
   });
 
-  const refresh_token = sign({ user_id: user.id }, "SECRET");
+  const refresh_token = sign({ user_id: user.id }, process.env.JWT_SECRET!);
 
   return { access_token, refresh_token };
 }
