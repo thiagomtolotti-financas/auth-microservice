@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import mongoose, { Document, Model, Schema } from "mongoose";
 
+// TODO: Store refresh token in DB
+
 export interface User extends Document {
   email: string;
   password?: string;

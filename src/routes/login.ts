@@ -9,8 +9,7 @@ import errors, {
   PasswordNotRegisteredError,
   UserNotFoundError,
 } from "../errors";
-
-const EXPIRATION_TIME_IN_SECONDS = 60 * 60 * 12;
+import EXPIRATION_TIME_IN_SECONDS from "../constants/EXPIRATION_TIME_IN_SECONDS";
 
 export default async function login(req: Request, res: Response) {
   const { success, data } = validateBody(req.body);
