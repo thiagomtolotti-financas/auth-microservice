@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import passwordSchema from "../schemas/zod/passwordSchema";
 import bcrypt from "bcrypt";
-import UserModel from "../models/UserModel";
+import UserModel, { User } from "../models/UserModel";
+import { sign } from "jsonwebtoken";
 
 const EXPIRATION_TIME_IN_SECONDS = 60 * 60 * 12;
 
@@ -20,9 +21,9 @@ export default async function login(req: Request, res: Response) {
   try {
     const user = await findUser(email, password);
 
-    //  TODO: Generate access and refresh tokens and return them
+    const tokens = generateTokens(user);
 
-    res.send(user);
+    res.send({ ...tokens, email });
   } catch (err) {
     // TODO: Handle errors
     res.status(400).send((err as Error).message);
@@ -52,4 +53,14 @@ async function findUser(email: string, password: string) {
   if (!isPasswordRight) throw new Error("Invalid email or password");
 
   return user;
+}
+
+function generateTokens(user: User) {
+  const access_token = sign({ user_id: user.id }, "SECRET", {
+    expiresIn: EXPIRATION_TIME_IN_SECONDS,
+  });
+
+  const refresh_token = sign({ user_id: user.id }, "SECRET");
+
+  return { access_token, refresh_token };
 }
