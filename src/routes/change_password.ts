@@ -1,16 +1,21 @@
+import { z } from "zod";
 import { Request, Response } from "express";
-import validatePassword from "../utils/validatePassword";
-import isRequestAuthenticated from "../utils/isRequestAuthenticated";
+import authHeaderSchema from "../schemas/zod/authHeaderSchema";
+import passwordSchema from "../schemas/zod/passwordSchema";
 
 export default function change_password(req: Request, res: Response) {
-  const { password } = req.body;
+  const { success: authHeaderSuccess } = authHeaderSchema.safeParse(
+    req.headers.authorization
+  );
 
-  if (!validatePassword(password)) {
+  const { success } = validateData(req.body);
+
+  if (!success) {
     res.status(400).send("Invalid parameters");
     return;
   }
 
-  if (!isRequestAuthenticated(req)) {
+  if (!authHeaderSuccess) {
     res.status(401).send("Invalid authentication");
     return;
   }
@@ -18,4 +23,14 @@ export default function change_password(req: Request, res: Response) {
   // TODO: Change password in DB
 
   res.send("Password changed successfully");
+}
+
+function validateData(body: unknown) {
+  const bodySchema = z
+    .object({
+      password: passwordSchema,
+    })
+    .strict();
+
+  return bodySchema.safeParse(body);
 }

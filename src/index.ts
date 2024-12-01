@@ -11,8 +11,6 @@ const app = express();
 
 app.use(express.json());
 
-// TODO: Ensure requests body has exactly the necessary fields
-
 // Endpoints
 /*
 	- Heartbeat
@@ -41,5 +39,6 @@ app.post("/password", password);
 app.post("/change_password", change_password);
 
 app.listen(port, () => {
+  console.clear();
   console.log(`Server listening on port ${port}`);
 });

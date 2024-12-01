@@ -1,16 +1,30 @@
 import { Request, Response } from "express";
-import validateEmail from "../utils/validateEmail";
-import validatePassword from "../utils/validatePassword";
+import { z } from "zod";
+import passwordSchema from "../schemas/zod/passwordSchema";
 
 export default function login(req: Request, res: Response) {
-  const { email, password } = req.body;
+  const { success, data } = validateBody(req.body);
 
-  if (!validateEmail(email) || !validatePassword(password)) {
+  if (!success) {
     res.status(400).send("Invalid parameters");
     return;
   }
 
-  //  TODO: Find user in DB and return tokens
+  const { email, password } = data;
+
+  //  TODO: Find user in DB
+  //  TODO: Generate access and refresh tokens and return them
 
   res.send({ email, password });
+}
+
+function validateBody(body: unknown) {
+  const bodySchema = z
+    .object({
+      email: z.string().email(),
+      password: passwordSchema,
+    })
+    .strict();
+
+  return bodySchema.safeParse(body);
 }

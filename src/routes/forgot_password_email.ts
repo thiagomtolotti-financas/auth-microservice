@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import validateEmail from "../utils/validateEmail";
+import { z } from "zod";
 
 export default function forgot_password_email(req: Request, res: Response) {
-  const { email } = req.body;
+  const { success } = validateData(req.body);
 
-  if (!validateEmail(email)) {
+  if (!success) {
     res.status(400).send("Invalid parameters");
   }
 
@@ -12,4 +12,14 @@ export default function forgot_password_email(req: Request, res: Response) {
   // TODO: Logic to send the user the email with the code to create the password
 
   res.send("Email sent successfully");
+}
+
+function validateData(body: unknown) {
+  const emailSchema = z
+    .object({
+      email: z.string().email(),
+    })
+    .strict();
+
+  return emailSchema.safeParse(body);
 }
