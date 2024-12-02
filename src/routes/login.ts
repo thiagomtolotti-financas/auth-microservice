@@ -37,7 +37,7 @@ export default async function login(req: Request, res: Response) {
     }
 
     console.error(err);
-    res.status(500).send("Internal Server Errror");
+    res.status(500).send("Internal Server Error");
   }
 }
 

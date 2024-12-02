@@ -15,10 +15,22 @@ export const InvalidEmailOrPasswordError = errorFactory(
   "Invalid email or password"
 );
 
+export const InvalidCodeError = errorFactory(
+  "InvalidCodeError",
+  "Invalid code"
+);
+
+export const ExpiredCodeError = errorFactory(
+  "ExpiredCodeError",
+  "Expired code"
+);
+
 const errors = [
   UserNotFoundError,
   PasswordNotRegisteredError,
   InvalidEmailOrPasswordError,
+  InvalidCodeError,
+  ExpiredCodeError,
 ];
 
 export default errors;

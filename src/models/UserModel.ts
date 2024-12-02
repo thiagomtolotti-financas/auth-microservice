@@ -5,9 +5,9 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface User extends Document {
   email: string;
-  password?: string;
-  password_code?: string;
-  password_code_expire_time?: Date;
+  password: string | null;
+  password_code: string | null;
+  password_code_expire_time: Date | null;
   is_active: boolean;
 }
 
@@ -19,9 +19,9 @@ const userSchema = new Schema<User>(
       unique: true,
       lowercase: true,
     },
-    password: { type: String },
-    password_code: { type: String },
-    password_code_expire_time: { type: Date },
+    password: { type: String, default: null },
+    password_code: { type: String, default: null },
+    password_code_expire_time: { type: Date, default: null },
     is_active: { type: Boolean, default: true },
   },
   { timestamps: true }
