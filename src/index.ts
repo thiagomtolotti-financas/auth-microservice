@@ -7,6 +7,7 @@ import password from "./routes/password";
 import change_password from "./routes/change_password";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import sendgrid from "@sendgrid/mail";
 
 const port = 3000;
 const app = express();
@@ -22,6 +23,8 @@ const db = mongoose.connection;
 db.on("error", (err) => {
   console.error(`Error connecting to database`, err);
 });
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
 
 // Endpoints
 /*

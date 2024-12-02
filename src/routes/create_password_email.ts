@@ -3,6 +3,9 @@ import { Request, Response } from "express";
 import UserModel from "../models/UserModel";
 import { UserAlreadyExistsError } from "../errors";
 import handleError from "../errors/handleError";
+import sendgrid, { MailDataRequired } from "@sendgrid/mail";
+
+// TODO: What happens if the password_code is expired?
 
 export default async function create_password_email(
   req: Request,
@@ -18,7 +21,14 @@ export default async function create_password_email(
   try {
     const user = await createUser(data.email);
 
-    // TODO: Logic to send the user the email with the code to create the password
+    const message: MailDataRequired = {
+      from: "thiagotolotti@thiagotolotti.com",
+      to: user.email,
+      subject: "Sua conta foi criada!",
+      text: `Sua conta foi criada, para validar basta inserir o código ${user.password_code}`,
+    };
+
+    await sendgrid.send(message);
 
     res.send("Email sent successfully");
   } catch (err) {
