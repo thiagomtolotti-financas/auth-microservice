@@ -25,12 +25,18 @@ export const ExpiredCodeError = errorFactory(
   "Expired code"
 );
 
+export const UserAlreadyExistsError = errorFactory(
+  "UserAlreadyExistsError",
+  "An user with this email is already registered"
+);
+
 const errors = [
   UserNotFoundError,
   PasswordNotRegisteredError,
   InvalidEmailOrPasswordError,
   InvalidCodeError,
   ExpiredCodeError,
+  UserAlreadyExistsError,
 ];
 
 export default errors;
