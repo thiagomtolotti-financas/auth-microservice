@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import { JWT } from "../globals";
 import UserModel from "../models/UserModel";
-import errors, { UserNotFoundError } from "../errors";
+import { UserNotFoundError } from "../errors";
 import EXPIRATION_TIME_IN_SECONDS from "../constants/EXPIRATION_TIME_IN_SECONDS";
 import { z } from "zod";
+import handleError from "../errors/handleError";
 
 export default async function refresh_token(req: Request, res: Response) {
   const { success, data } = z
@@ -34,14 +35,6 @@ export default async function refresh_token(req: Request, res: Response) {
 
     res.send({ access_token });
   } catch (err) {
-    const error = errors.find((e) => err instanceof e);
-
-    if (error) {
-      res.status(400).send((err as Error).message);
-      return;
-    }
-
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    handleError(err as Error, res);
   }
 }

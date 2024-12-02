@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import passwordSchema from "../schemas/zod/passwordSchema";
 import UserModel, { User } from "../models/UserModel";
-import errors, {
+import {
   ExpiredCodeError,
   InvalidCodeError,
   UserNotFoundError,
 } from "../errors";
+import handleError from "../errors/handleError";
 
 export default async function password(req: Request, res: Response) {
   const { success, data } = validateData(req.body);
@@ -33,15 +34,7 @@ export default async function password(req: Request, res: Response) {
 
     res.send("Password set successfully");
   } catch (err) {
-    const error = errors.find((e) => err instanceof e);
-
-    if (error) {
-      res.status(400).send((err as Error).message);
-      return;
-    }
-
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    handleError(err as Error, res);
   }
 }
 

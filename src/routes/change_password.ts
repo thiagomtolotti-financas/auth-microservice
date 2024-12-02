@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import authHeaderSchema from "../schemas/zod/authHeaderSchema";
 import passwordSchema from "../schemas/zod/passwordSchema";
 import UserModel from "../models/UserModel";
-import errors, { UserNotFoundError } from "../errors";
+import { UserNotFoundError } from "../errors";
 import { verify } from "jsonwebtoken";
 import { JWT } from "../globals";
+import handleError from "../errors/handleError";
 
 export default function change_password(req: Request, res: Response) {
   const { success: authHeaderSuccess, data: authHeader } =
@@ -31,16 +32,7 @@ export default function change_password(req: Request, res: Response) {
     changePasswordService(user_id, data.password);
     res.send("Password changed successfully");
   } catch (err) {
-    // TODO: Make function to throw known errors (DRY)
-    const error = errors.find((e) => err instanceof e);
-
-    if (error) {
-      res.status(400).send((err as Error).message);
-      return;
-    }
-
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    handleError(err as Error, res);
   }
 }
 

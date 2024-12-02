@@ -4,12 +4,13 @@ import passwordSchema from "../schemas/zod/passwordSchema";
 import bcrypt from "bcrypt";
 import UserModel, { User } from "../models/UserModel";
 import { sign } from "jsonwebtoken";
-import errors, {
+import {
   InvalidEmailOrPasswordError,
   PasswordNotRegisteredError,
   UserNotFoundError,
 } from "../errors";
 import EXPIRATION_TIME_IN_SECONDS from "../constants/EXPIRATION_TIME_IN_SECONDS";
+import catchError from "../errors/handleError";
 
 export default async function login(req: Request, res: Response) {
   const { success, data } = validateBody(req.body);
@@ -21,7 +22,6 @@ export default async function login(req: Request, res: Response) {
 
   const { email, password } = data;
 
-  // TODO: https://www.youtube.com/watch?v=AdmGHwvgaVs
   try {
     const user = await findUser(email, password);
 
@@ -29,15 +29,7 @@ export default async function login(req: Request, res: Response) {
 
     res.send({ ...tokens, email });
   } catch (err) {
-    const error = errors.find((e) => err instanceof e);
-
-    if (error) {
-      res.status(400).send((err as Error).message);
-      return;
-    }
-
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    catchError(err as Error, res);
   }
 }
 
