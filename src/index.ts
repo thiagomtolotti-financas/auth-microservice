@@ -1,7 +1,7 @@
 import express from "express";
 import login from "./routes/login";
 import refresh_token from "./routes/refresh_token";
-import create_password_email from "./routes/create_password_email";
+import create_user from "./routes/create_user";
 import forgot_password_email from "./routes/forgot_password_email";
 import password from "./routes/password";
 import change_password from "./routes/change_password";
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 app.post("/login", login);
 app.post("/refresh_token", refresh_token);
 
-app.post("/create_password_email", create_password_email);
+app.post("/create_user", create_user);
 app.post("/forgot_password_email", forgot_password_email);
 
 app.post("/password", password);

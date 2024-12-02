@@ -1,13 +1,12 @@
 import bcrypt from "bcrypt";
 import mongoose, { Document, Model, Schema, UpdateQuery } from "mongoose";
 
-// TODO: Store refresh token in DB
-
 export interface User extends Document {
   email: string;
   password: string | null;
   password_code: string | null;
   password_code_expire_time: Date | null;
+  refresh_token: string | null;
   is_active: boolean;
 }
 
@@ -23,6 +22,7 @@ const userSchema = new Schema<User>(
     password_code: { type: String, default: null },
     password_code_expire_time: { type: Date, default: null },
     is_active: { type: Boolean, default: true },
+    refresh_token: { type: String, default: null },
   },
   { timestamps: true }
 );

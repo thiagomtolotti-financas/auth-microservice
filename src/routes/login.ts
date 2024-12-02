@@ -25,7 +25,7 @@ export default async function login(req: Request, res: Response) {
   try {
     const user = await findUser(email, password);
 
-    const tokens = generateTokens(user);
+    const tokens = await generateTokens(user);
 
     res.send({ ...tokens, email });
   } catch (err) {
@@ -57,12 +57,16 @@ async function findUser(email: string, password: string) {
   return user;
 }
 
-function generateTokens(user: User) {
+async function generateTokens(user: User) {
   const access_token = sign({ user_id: user.id }, process.env.JWT_SECRET!, {
     expiresIn: EXPIRATION_TIME_IN_SECONDS,
   });
 
   const refresh_token = sign({ user_id: user.id }, process.env.JWT_SECRET!);
+
+  await user.updateOne({
+    refresh_token,
+  });
 
   return { access_token, refresh_token };
 }

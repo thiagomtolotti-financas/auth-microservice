@@ -30,6 +30,11 @@ export const UserAlreadyExistsError = errorFactory(
   "An user with this email is already registered"
 );
 
+export const InvalidTokenError = errorFactory(
+  "InvalidTokenError",
+  "Invalid token"
+);
+
 const errors = [
   UserNotFoundError,
   PasswordNotRegisteredError,
@@ -37,6 +42,7 @@ const errors = [
   InvalidCodeError,
   ExpiredCodeError,
   UserAlreadyExistsError,
+  InvalidTokenError,
 ];
 
 export default errors;

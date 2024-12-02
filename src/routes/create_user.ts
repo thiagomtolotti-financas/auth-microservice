@@ -7,12 +7,8 @@ import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 import generatePasswordCode from "../utils/generatePasswordCode";
 
 // TODO: What happens if the password_code is expired?
-// TODO: Rename to 'create_user'?
 
-export default async function create_password_email(
-  req: Request,
-  res: Response
-) {
+export default async function create_user(req: Request, res: Response) {
   const { success, data } = validateData(req.body);
 
   if (!success) {
@@ -32,7 +28,7 @@ export default async function create_password_email(
 
     await sendgrid.send(message);
 
-    res.send("Email sent successfully");
+    res.send("An email with the code for creating the password was sent!");
   } catch (err) {
     handleError(err as Error, res);
   }
