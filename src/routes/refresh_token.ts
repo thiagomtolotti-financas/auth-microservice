@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import authHeaderSchema from "../schemas/zod/authHeaderSchema";
 import { sign, verify } from "jsonwebtoken";
 import { JWT } from "../globals";
 import UserModel from "../models/UserModel";
