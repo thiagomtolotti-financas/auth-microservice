@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema, UpdateQuery } from "mongoose";
 
 // TODO: Store refresh token in DB
 
@@ -33,6 +33,19 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password as string, 10);
   }
 
+  next();
+});
+
+userSchema.pre("updateOne", async function (next) {
+  const update = this.getUpdate(); // Access the update object
+
+  if (update && typeof update === "object" && "password" in update) {
+    const updateQuery = update as UpdateQuery<{ password?: string }>;
+
+    if (updateQuery.password) {
+      updateQuery.password = await bcrypt.hash(updateQuery.password, 10);
+    }
+  }
   next();
 });
 
