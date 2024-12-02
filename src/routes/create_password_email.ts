@@ -4,8 +4,10 @@ import UserModel from "../models/UserModel";
 import { UserAlreadyExistsError } from "../errors";
 import handleError from "../errors/handleError";
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
+import generatePasswordCode from "../utils/generatePasswordCode";
 
 // TODO: What happens if the password_code is expired?
+// TODO: Rename to 'create_user'?
 
 export default async function create_password_email(
   req: Request,
@@ -50,16 +52,8 @@ function isMongooseError(error: unknown): error is { code: number } {
   return typeof error === "object" && error !== null && "code" in error;
 }
 
-function generateChangePasswordCode() {
-  const oneHour = 1000 * 60 * 60;
-  const expireTime = Date.now() + oneHour;
-  const code = Math.floor(1000 + Math.random() * 9000);
-
-  return { code, expireTime };
-}
-
 async function createUser(email: string) {
-  const { code, expireTime } = generateChangePasswordCode();
+  const { code, expireTime } = generatePasswordCode();
 
   try {
     const user = await UserModel.create({
