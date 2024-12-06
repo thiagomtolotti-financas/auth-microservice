@@ -2,10 +2,12 @@
   "name": "auth-microservice",
   "version": "1.0.0",
   "description": "Microservice for managing authentication API requests",
-  "main": "index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
-    "test": "npm run test"
+    "dev": "nodemon",
+    "test": "npm run test",
+    "build": "tsup ./src/index.ts",
+    "start": "node dist"
   },
   "author": "Thiago M Tolotti",
   "license": "ISC",
@@ -25,6 +27,7 @@
     "eslint": "^9.16.0",
     "globals": "^15.13.0",
     "nodemon": "^3.1.7",
+    "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0",
     "zod": "^3.23.8"
