@@ -6,8 +6,6 @@ import handleError from "../errors/handleError";
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 import generatePasswordCode from "../utils/generatePasswordCode";
 
-// TODO: What happens if the password_code is expired?
-
 export default async function create_user(req: Request, res: Response) {
   const { success, data } = validateData(req.body);
 
