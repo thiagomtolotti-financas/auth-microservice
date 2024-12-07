@@ -1,3 +1,4 @@
+import { compare } from "bcrypt";
 import {
   InvalidEmailOrPasswordError,
   PasswordNotRegisteredError,
@@ -34,6 +35,8 @@ describe("login/findUser", () => {
 
     try {
       await findUser(mockEmail, mockPassword);
+
+      throw new Error("Test Error");
     } catch (err) {
       expect(err).toBeInstanceOf(UserNotFoundError);
     }
@@ -47,19 +50,20 @@ describe("login/findUser", () => {
 
     try {
       await findUser(mockEmail, mockPassword);
+
+      throw new Error("Test Error");
     } catch (err) {
       expect(err).toBeInstanceOf(PasswordNotRegisteredError);
     }
   });
 
   it("Should throw an error if the passwords don't match", async () => {
-    (UserModel.findOne as jest.Mock).mockReturnValueOnce({
-      email: mockEmail,
-      password: "null",
-    });
+    (compare as jest.Mock).mockReturnValueOnce(false);
 
     try {
       await findUser(mockEmail, mockPassword);
+
+      throw new Error("Test Error");
     } catch (err) {
       expect(err).toBeInstanceOf(InvalidEmailOrPasswordError);
     }
