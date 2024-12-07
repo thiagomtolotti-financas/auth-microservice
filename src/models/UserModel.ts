@@ -8,6 +8,7 @@ export interface User extends Document {
   password_code_expire_time: Date | null;
   refresh_token: string | null;
   is_active: boolean;
+  id: string;
 }
 
 const userSchema = new Schema<User>(
