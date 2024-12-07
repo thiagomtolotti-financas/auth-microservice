@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import EXPIRATION_TIME_IN_SECONDS from "../../constants/EXPIRATION_TIME_IN_SECONDS";
+import EXPIRATION_TIME_IN_SECONDS from "@/constants/EXPIRATION_TIME_IN_SECONDS";
 
-import handleError from "../../errors/handleError";
+import handleError from "@/errors/handleError";
 import validateData from "./validateData";
 import findUserByRefreshToken from "./findUserByRefreshToken";
 

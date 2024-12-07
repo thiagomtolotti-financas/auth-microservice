@@ -4,7 +4,7 @@ import validateBody from "./validateBody";
 import findUser from "./findUser";
 import generateUserTokens from "./generateUserTokens";
 
-import handleError from "../../errors/handleError";
+import handleError from "@/errors/handleError";
 
 export default async function login(req: Request, res: Response) {
   const { success, data } = validateBody(req.body);

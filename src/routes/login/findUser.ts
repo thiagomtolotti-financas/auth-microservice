@@ -2,8 +2,9 @@ import {
   InvalidEmailOrPasswordError,
   PasswordNotRegisteredError,
   UserNotFoundError,
-} from "../../errors";
-import UserModel from "../../models/UserModel";
+} from "@/errors";
+import UserModel from "@/models/UserModel";
+
 import bcrypt from "bcrypt";
 
 export default async function findUser(email: string, password: string) {

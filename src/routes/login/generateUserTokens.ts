@@ -1,5 +1,5 @@
-import { User } from "../../models/UserModel";
-import EXPIRATION_TIME_IN_SECONDS from "../../constants/EXPIRATION_TIME_IN_SECONDS";
+import { User } from "@/models/UserModel";
+import EXPIRATION_TIME_IN_SECONDS from "@/constants/EXPIRATION_TIME_IN_SECONDS";
 import { sign } from "jsonwebtoken";
 
 export default async function generateUserTokens(user: User) {

@@ -1,9 +1,9 @@
 import { verify } from "jsonwebtoken";
 
-import { JWT } from "../../globals";
-import { InvalidTokenError, UserNotFoundError } from "../../errors";
+import { JWT } from "@/globals";
+import { InvalidTokenError, UserNotFoundError } from "@/errors";
 
-import UserModel from "../../models/UserModel";
+import UserModel from "@/models/UserModel";
 
 export default async function findUserByRefreshToken(refresh_token: string) {
   const { user_id } = verify(refresh_token, process.env.JWT_SECRET!) as JWT;

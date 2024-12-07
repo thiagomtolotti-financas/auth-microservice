@@ -1,5 +1,5 @@
 import { z } from "zod";
-import passwordSchema from "../../schemas/zod/passwordSchema";
+import passwordSchema from "@/schemas/zod/passwordSchema";
 
 export default function validateBody(body: unknown) {
   const bodySchema = z
