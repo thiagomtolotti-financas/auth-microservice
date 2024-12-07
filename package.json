@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "test": "jest",
+    "coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "build": "tsup ./src/index.ts",
     "start": "node ./dist/index.js"
   },
