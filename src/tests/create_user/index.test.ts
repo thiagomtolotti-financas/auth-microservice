@@ -1,13 +1,13 @@
 import create_user from "@/routes/create_user";
 import createUserInDB from "@/routes/create_user/createUserInDB";
-import validateData from "@/routes/create_user/validateData";
 import { Request, Response } from "express";
 import sendgrid from "@sendgrid/mail";
 import handleError from "@/errors/handleError";
+import emailObjectSchema from "@/schemas/zod/emailObjectSchema";
 
 jest.mock("@sendgrid/mail");
 jest.mock("@/routes/create_user/createUserInDB");
-jest.mock("@/routes/create_user/validateData");
+jest.mock("@/schemas/zod/emailObjectSchema");
 jest.mock("@/errors/handleError");
 
 const mockEmail = "test@test.com";
@@ -19,11 +19,10 @@ const mockResponse = {
   status: jest.fn().mockReturnThis(),
 } as unknown as Response;
 
-(validateData as jest.Mock).mockReturnValue({
+(emailObjectSchema.safeParse as jest.Mock).mockReturnValue({
   success: true,
   data: {
     email: mockEmail,
-    passwordCode: mockCode,
   },
 });
 
@@ -43,7 +42,7 @@ describe("create_user route", () => {
   });
 
   it("Should return an error if can't validate the data", async () => {
-    (validateData as jest.Mock).mockReturnValueOnce({
+    (emailObjectSchema.safeParse as jest.Mock).mockReturnValueOnce({
       success: false,
     });
 

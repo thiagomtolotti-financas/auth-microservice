@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 
 import createUser from "./createUserInDB";
-import validateData from "./validateData";
 
 import handleError from "@/errors/handleError";
+import emailObjectSchema from "@/schemas/zod/emailObjectSchema";
 
 export default async function create_user(req: Request, res: Response) {
-  const { success, data } = validateData(req.body);
+  const { success, data } = emailObjectSchema.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");
