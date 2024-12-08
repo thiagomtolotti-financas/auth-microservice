@@ -5,11 +5,11 @@ import UserModel from "@/models/UserModel";
 import { UserNotFoundError } from "@/errors";
 import handleError from "@/errors/handleError";
 
-import validateData from "./validateData";
 import validateCode from "./validateCode";
+import passwordRouteSchema from "@/schemas/zod/passwordRouteSchema";
 
 export default async function password(req: Request, res: Response) {
-  const { success, data } = validateData(req.body);
+  const { success, data } = passwordRouteSchema.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");

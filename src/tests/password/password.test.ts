@@ -3,11 +3,11 @@ import handleError from "@/errors/handleError";
 import UserModel, { User } from "@/models/UserModel";
 import password from "@/routes/password";
 import validateCode from "@/routes/password/validateCode";
-import validateData from "@/routes/password/validateData";
+import passwordRouteSchema from "@/schemas/zod/passwordRouteSchema";
 import { Request, Response } from "express";
 
 jest.mock("@/errors/handleError");
-jest.mock("@/routes/password/validateData");
+jest.mock("@/schemas/zod/passwordRouteSchema");
 jest.mock("@/routes/password/validateCode");
 jest.mock("@/models/UserModel");
 
@@ -26,7 +26,7 @@ const mockedUser = {
   updateOne: jest.fn(),
 } as unknown as User;
 
-(validateData as jest.Mock).mockReturnValue({
+(passwordRouteSchema.safeParse as jest.Mock).mockReturnValue({
   success: true,
   data: {
     email: mockedEmail,
@@ -38,7 +38,7 @@ const mockedUser = {
 
 describe("password route", () => {
   it("Should return an error if the data in the body is invalid", async () => {
-    (validateData as jest.Mock).mockReturnValueOnce({
+    (passwordRouteSchema.safeParse as jest.Mock).mockReturnValueOnce({
       sucess: false,
     });
 
