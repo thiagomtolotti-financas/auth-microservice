@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 
-import validateBody from "./validateBody";
 import findUser from "./findUser";
 import generateUserTokens from "./generateUserTokens";
 
 import handleError from "@/errors/handleError";
 
+import loginSchema from "@/schemas/zod/loginSchema";
+
 export default async function login(req: Request, res: Response) {
-  const { success, data } = validateBody(req.body);
+  const { success, data } = loginSchema.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");
