@@ -4,10 +4,10 @@ import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 import createUser from "./createUserInDB";
 
 import handleError from "@/errors/handleError";
-import emailObjectSchema from "@/schemas/zod/emailObjectSchema";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function create_user(req: Request, res: Response) {
-  const { success, data } = emailObjectSchema.safeParse(req.body);
+  const { success, data } = routesSchemas.create_user.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");

@@ -6,10 +6,10 @@ import handleError from "@/errors/handleError";
 import findUserByRefreshToken from "./findUserByRefreshToken";
 
 import { sign } from "jsonwebtoken";
-import refreshTokenSchema from "@/schemas/zod/refreshTokenSchema";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function refresh_token(req: Request, res: Response) {
-  const { success, data } = refreshTokenSchema.safeParse(req.body);
+  const { success, data } = routesSchemas.refresh_token.safeParse(req.body);
 
   if (!success) {
     res.status(401).send("Invalid Data");

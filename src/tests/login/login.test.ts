@@ -4,12 +4,12 @@ import findUser from "@/routes/login/findUser";
 import generateUserTokens from "@/routes/login/generateUserTokens";
 import login from "@/routes/login";
 import handleError from "@/errors/handleError";
-import loginSchema from "@/schemas/zod/loginSchema";
+import routesSchemas from "@/schemas/routesSchemas";
 
 jest.mock("@/routes/login/findUser");
 jest.mock("@/routes/login/generateUserTokens");
 jest.mock("@/errors/handleError");
-jest.mock("@/schemas/zod/loginSchema");
+jest.mock("@/schemas/routesSchemas");
 
 const mockEmail = "test@test.com";
 const mockPassword = "test";
@@ -29,7 +29,7 @@ const mockResponse = {
 const mockAccessToken = "access_token";
 const mockRefreshToken = "refresh_token";
 
-(loginSchema.safeParse as jest.Mock).mockReturnValue({
+(routesSchemas.login.safeParse as jest.Mock).mockReturnValue({
   success: true,
   data: {
     email: mockEmail,
@@ -48,7 +48,9 @@ describe("Login route", () => {
   it("Should return the user email and tokens if the login is successful", async () => {
     await login(mockRequest, mockResponse);
 
-    expect(loginSchema.safeParse).toHaveBeenCalledWith(mockRequest.body);
+    expect(routesSchemas.login.safeParse).toHaveBeenCalledWith(
+      mockRequest.body
+    );
     expect(findUser).toHaveBeenCalledWith(mockEmail, mockPassword);
     expect(generateUserTokens).toHaveBeenCalledWith({
       email: mockEmail,
@@ -62,7 +64,7 @@ describe("Login route", () => {
   });
 
   it("Should return an 400 error and an 'Invalid Parameters' if the body is not valid", async () => {
-    (loginSchema.safeParse as jest.Mock).mockReturnValueOnce({
+    (routesSchemas.login.safeParse as jest.Mock).mockReturnValueOnce({
       success: false,
     });
 

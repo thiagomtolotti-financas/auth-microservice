@@ -4,11 +4,10 @@ import findUser from "./findUser";
 import generateUserTokens from "./generateUserTokens";
 
 import handleError from "@/errors/handleError";
-
-import loginSchema from "@/schemas/zod/loginSchema";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function login(req: Request, res: Response) {
-  const { success, data } = loginSchema.safeParse(req.body);
+  const { success, data } = routesSchemas.login.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");
