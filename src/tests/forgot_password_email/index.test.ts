@@ -1,15 +1,15 @@
 import UserModel from "@/models/UserModel";
 import forgot_password_email from "@/routes/forgot_password_email";
 import resetPassword from "@/routes/forgot_password_email/resetPassword";
-import validateData from "@/routes/forgot_password_email/validateData";
 import { Request, Response } from "express";
 import sendgrid from "@sendgrid/mail";
 import handleError from "@/errors/handleError";
 import { UserNotFoundError } from "@/errors";
+import routesSchemas from "@/schemas/routesSchemas";
 
 jest.mock("@sendgrid/mail");
 jest.mock("@/models/UserModel");
-jest.mock("@/routes/forgot_password_email/validateData");
+jest.mock("@/schemas/routesSchemas");
 jest.mock("@/routes/forgot_password_email/resetPassword");
 jest.mock("@/errors/handleError");
 
@@ -22,7 +22,7 @@ const mockedResponse = {
 const mockedCode = 1234;
 const mockedEmail = "test@test.com";
 
-(validateData as jest.Mock).mockReturnValue({
+(routesSchemas.forgot_password_email.safeParse as jest.Mock).mockReturnValue({
   success: true,
   data: {
     email: mockedEmail,
@@ -37,7 +37,9 @@ const mockedEmail = "test@test.com";
 
 describe("forgot_password_email route", () => {
   it("Should return an error if the parameters are invalid", async () => {
-    (validateData as jest.Mock).mockReturnValueOnce({
+    (
+      routesSchemas.forgot_password_email.safeParse as jest.Mock
+    ).mockReturnValueOnce({
       success: false,
     });
 

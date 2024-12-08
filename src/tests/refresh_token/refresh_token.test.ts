@@ -1,16 +1,16 @@
 import handleError from "@/errors/handleError";
 import refresh_token from "@/routes/refresh_token";
 import findUserByRefreshToken from "@/routes/refresh_token/findUserByRefreshToken";
-import validateData from "@/routes/refresh_token/validateData";
+import routesSchemas from "@/schemas/routesSchemas";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 
 jest.mock("@/errors/handleError");
-jest.mock("@/routes/refresh_token/validateData");
 jest.mock("@/routes/refresh_token/findUserByRefreshToken");
 jest.mock("jsonwebtoken");
+jest.mock("@/schemas/routesSchemas");
 
-(validateData as jest.Mock).mockReturnValue({
+(routesSchemas.refresh_token.safeParse as jest.Mock).mockReturnValue({
   success: true,
   data: {},
 });
@@ -39,7 +39,7 @@ describe("refresh_token route", () => {
   });
 
   it("Should return a 401 Invalid Data if the validation is not successful", async () => {
-    (validateData as jest.Mock).mockReturnValueOnce({
+    (routesSchemas.refresh_token.safeParse as jest.Mock).mockReturnValueOnce({
       success: false,
     });
 

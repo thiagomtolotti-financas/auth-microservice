@@ -1,18 +1,17 @@
-import { z } from "zod";
 import { Request, Response } from "express";
 import authHeaderSchema from "../schemas/zod/authHeaderSchema";
-import passwordSchema from "../schemas/zod/passwordSchema";
 import UserModel from "../models/UserModel";
 import { UserNotFoundError } from "../errors";
 import { verify } from "jsonwebtoken";
 import { JWT } from "../globals";
 import handleError from "../errors/handleError";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default function change_password(req: Request, res: Response) {
   const { success: authHeaderSuccess, data: authHeader } =
     authHeaderSchema.safeParse(req.headers.authorization);
 
-  const { success, data } = validateData(req.body);
+  const { success, data } = routesSchemas.change_password.safeParse(req.body);
 
   if (!success) {
     res.status(400).send("Invalid parameters");
@@ -34,16 +33,6 @@ export default function change_password(req: Request, res: Response) {
   } catch (err) {
     handleError(err as Error, res);
   }
-}
-
-function validateData(body: unknown) {
-  const bodySchema = z
-    .object({
-      password: passwordSchema,
-    })
-    .strict();
-
-  return bodySchema.safeParse(body);
 }
 
 async function changePasswordService(user_id: string, new_password: string) {

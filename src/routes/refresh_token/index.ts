@@ -3,13 +3,13 @@ import { Request, Response } from "express";
 import EXPIRATION_TIME_IN_SECONDS from "@/constants/EXPIRATION_TIME_IN_SECONDS";
 
 import handleError from "@/errors/handleError";
-import validateData from "./validateData";
 import findUserByRefreshToken from "./findUserByRefreshToken";
 
 import { sign } from "jsonwebtoken";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function refresh_token(req: Request, res: Response) {
-  const { success, data } = validateData(req.body);
+  const { success, data } = routesSchemas.refresh_token.safeParse(req.body);
 
   if (!success) {
     res.status(401).send("Invalid Data");

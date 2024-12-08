@@ -3,17 +3,19 @@ import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 
 import UserModel from "@/models/UserModel";
 
-import validateData from "./validateData";
 import resetPassword from "./resetPassword";
 
 import { UserNotFoundError } from "@/errors";
 import handleError from "@/errors/handleError";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function forgot_password_email(
   req: Request,
   res: Response
 ) {
-  const { success, data } = validateData(req.body);
+  const { success, data } = routesSchemas.forgot_password_email.safeParse(
+    req.body
+  );
 
   if (!success) {
     res.status(400).send("Invalid parameters");
