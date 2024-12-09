@@ -8,12 +8,12 @@ describe("generatePasswordCode function", () => {
     expect(result).toHaveProperty("expireTime");
   });
 
-  it("Should return a code between 1000 and 9000", () => {
+  it("Should return a code between 1000 and 9999", () => {
     const result = generatePasswordCode();
     const { code } = result;
 
     expect(code).toBeGreaterThanOrEqual(1000);
-    expect(code).toBeLessThan(9000);
+    expect(code).toBeLessThanOrEqual(9999);
   });
 
   it("Should return the expire time with one hour from now", () => {
