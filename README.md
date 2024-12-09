@@ -10,6 +10,7 @@ This is a microservice designed to handle authentication (initially in my financ
 | Express        | Framework for creating the API                |
 | Mongoose       | ODM library for creating schemas for the DB   |
 | MongoDB        | Database                                      |
+| Jest           | Unit testing                                  |
 
 ## Endpoints
 
