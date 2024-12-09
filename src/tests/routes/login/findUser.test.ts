@@ -3,9 +3,9 @@ import {
   InvalidEmailOrPasswordError,
   PasswordNotRegisteredError,
   UserNotFoundError,
-} from "../../errors";
-import UserModel from "../../models/UserModel";
-import findUser from "../../routes/login/findUser";
+} from "../../../errors";
+import UserModel from "../../../models/UserModel";
+import findUser from "../../../routes/login/findUser";
 
 const mockEmail = "test@test.com";
 const mockPassword = "aa123456";

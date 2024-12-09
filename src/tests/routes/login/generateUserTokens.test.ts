@@ -1,7 +1,7 @@
 import { sign } from "jsonwebtoken";
-import { User } from "../../models/UserModel";
-import generateUserTokens from "../../routes/login/generateUserTokens";
-import EXPIRATION_TIME_IN_SECONDS from "../../constants/EXPIRATION_TIME_IN_SECONDS";
+import { User } from "../../../models/UserModel";
+import generateUserTokens from "../../../routes/login/generateUserTokens";
+import EXPIRATION_TIME_IN_SECONDS from "../../../constants/EXPIRATION_TIME_IN_SECONDS";
 
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn(),
