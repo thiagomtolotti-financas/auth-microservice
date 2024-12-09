@@ -12,5 +12,10 @@ export default [
     rules: {
       "no-warning-comments": "warn",
     },
+    settings: {
+      "import/resolver": {
+        typescript: {},
+      },
+    },
   },
 ];

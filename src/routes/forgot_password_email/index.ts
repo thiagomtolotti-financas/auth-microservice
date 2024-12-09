@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
-import { z } from "zod";
-import UserModel, { User } from "../models/UserModel";
-import { UserNotFoundError } from "../errors";
-import generatePasswordCode from "../utils/generatePasswordCode";
-import handleError from "../errors/handleError";
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
+
+import UserModel from "@/models/UserModel";
+
+import resetPassword from "./resetPassword";
+
+import { UserNotFoundError } from "@/errors";
+import handleError from "@/errors/handleError";
+import routesSchemas from "@/schemas/routesSchemas";
 
 export default async function forgot_password_email(
   req: Request,
   res: Response
 ) {
-  const { success, data } = validateData(req.body);
+  const { success, data } = routesSchemas.forgot_password_email.safeParse(
+    req.body
+  );
 
   if (!success) {
     res.status(400).send("Invalid parameters");
@@ -37,25 +42,4 @@ export default async function forgot_password_email(
   } catch (err) {
     handleError(err as Error, res);
   }
-}
-
-function validateData(body: unknown) {
-  const emailSchema = z
-    .object({
-      email: z.string().email(),
-    })
-    .strict();
-
-  return emailSchema.safeParse(body);
-}
-
-async function resetPassword(user: User) {
-  const { code, expireTime } = generatePasswordCode();
-
-  await user.updateOne({
-    password_code: code,
-    password_code_expire_time: expireTime,
-  });
-
-  return { code, expireTime };
 }
