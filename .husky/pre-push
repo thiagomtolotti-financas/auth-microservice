@@ -1,0 +1,29 @@
+run_typescript_check() {
+	echo "Running Typescript check..."
+	npx tsc --noEmit > /dev/null 2>&1
+}
+
+run_eslint_check() {
+	echo "Running eslint check..."
+	npm run lint > /dev/null 2>&1
+}
+
+run_build() {
+	echo "Building application..."
+	echo "  Installing dependencies"
+	npm ci > /dev/null 2>&1
+	echo "  Building"
+	npm run build > /dev/null 2>&1
+}
+
+run_tests() {
+	echo "Running tests..."
+	npm run coverage > /dev/null 2>&1
+}
+
+run_typescript_check
+run_eslint_check
+run_build
+run_tests
+
+echo "All integrations OK!"
