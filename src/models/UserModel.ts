@@ -1,5 +1,6 @@
-import bcrypt from "bcrypt";
-import mongoose, { Document, Model, Schema, UpdateQuery } from "mongoose";
+import hashPassword from "@/utils/hashPassword";
+import updateHashPassword from "@/utils/updateHashPassword";
+import mongoose, { Document, Model, Query, Schema } from "mongoose";
 
 export interface User extends Document {
   email: string;
@@ -28,27 +29,15 @@ const userSchema = new Schema<User>(
   { timestamps: true }
 );
 
+export type UserDocument = mongoose.Document &
+  Query<unknown, unknown, unknown, unknown, "find", Record<string, never>> & {
+    password: string;
+  };
+
 // Hashes the user's password before saving
-userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password as string, 10);
-  }
+userSchema.pre("save", hashPassword);
 
-  next();
-});
-
-userSchema.pre("updateOne", async function (next) {
-  const update = this.getUpdate(); // Access the update object
-
-  if (update && typeof update === "object" && "password" in update) {
-    const updateQuery = update as UpdateQuery<{ password?: string }>;
-
-    if (updateQuery.password) {
-      updateQuery.password = await bcrypt.hash(updateQuery.password, 10);
-    }
-  }
-  next();
-});
+userSchema.pre("updateOne", updateHashPassword);
 
 const UserModel: Model<User> = mongoose.model<User>("Users", userSchema);
 
