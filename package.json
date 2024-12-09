@@ -8,8 +8,8 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "build": "tsup ./src/index.ts",
-    "start": "node ./dist/index.js",
+    "build": "tsup",
+    "start": "node ./dist/index.cjs",
     "lint": "npx eslint",
     "prepare": "husky"
   },
