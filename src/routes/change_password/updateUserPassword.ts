@@ -11,6 +11,8 @@ export default async function updateUserPassword(
   if (!user) throw new UserNotFoundError();
 
   await user.updateOne({
+    password_code: null,
+    password_code_expire_time: null,
     password: new_password,
   });
 }

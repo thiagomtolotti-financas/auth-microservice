@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import authHeaderSchema from "@/schemas/zod/authHeaderSchema";
 import routesSchemas from "@/schemas/routesSchemas";
 
-import { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { JWT } from "@/globals";
 
 import handleError from "@/errors/handleError";
@@ -26,7 +26,7 @@ export default async function change_password(req: Request, res: Response) {
   }
 
   try {
-    const { user_id } = verify(
+    const { user_id } = jwt.verify(
       authHeader.split(" ")[1],
       process.env.JWT_SECRET!
     ) as JWT;
