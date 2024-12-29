@@ -31,6 +31,8 @@ describe("updateUserPassword function", () => {
 
     expect(mockedUser.updateOne).toHaveBeenCalledWith({
       password: mockedNewPassword,
+      password_code: null,
+      password_code_expire_time: null,
     });
   });
 });
