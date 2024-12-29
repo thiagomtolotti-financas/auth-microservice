@@ -4,25 +4,21 @@
 source ./.husky/run_check.sh
 source ./.husky/get_time.sh
 
-clear
-
 run_all_checks() {
 	# TODO: Run in parallel?
 	# TODO: Log time for each task
-
 	run_check "Checking for type errors" "npx tsc --noEmit" 
 	run_check "Checking for linting problems" "npm run lint"
 	run_check "Running unit tests" "npm run coverage"
-	run_check "Installing dependencies" "npm ci"
-	run_check "Building application" "npm run build"
-	# TODO: Start application?
 }
+
+clear
 
 # Prevents husky default behaviour
 set +e
 
 echo
-echo "⚙️   Starting pre-push checks"
+echo "⚙️   Starting pre-commit checks"
 echo
 
 get_time run_all_checks
