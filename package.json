@@ -9,7 +9,7 @@
     "coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "build": "tsup",
-    "start": "node ./dist/index.cjs",
+    "start": "node ./dist/index.js",
     "lint": "npx eslint",
     "prepare": "husky"
   },
