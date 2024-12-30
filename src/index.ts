@@ -41,7 +41,7 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
 */
 
 app.get("/", (req, res) => {
-  res.send("Microservice is online");
+  res.send("Authentication microservice is online");
 });
 
 app.post("/login", login);
