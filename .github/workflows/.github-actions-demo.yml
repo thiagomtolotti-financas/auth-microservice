@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - master # Triggers the workflow for any push to master branch
+      - development
 
   pull_request:
     branches:
       - master # Triggers the workflow for pull requests targeting master branch
+      - development
 
 jobs:
   typescript:
