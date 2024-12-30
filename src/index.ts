@@ -8,6 +8,7 @@ import change_password from "./routes/change_password";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sendgrid from "@sendgrid/mail";
+import validate_token from "./routes/validate-token";
 
 const port = 3000;
 const app = express();
@@ -32,12 +33,14 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
 
 	- Login (email, password) -> token
 	- Refresh token (old_token) -> token // With auth header
+	- Validate token () -> user_id // With auth header
 
 	- Send Email to create password (email) -> code
 	- Send Forgot Password Email (email) -> code
 
 	- Set/Reset password (code, password)
 	- Change password (new_password) // With auth header
+
 */
 
 app.get("/", (req, res) => {
@@ -46,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.post("/login", login);
 app.post("/refresh_token", refresh_token);
+app.get("/validate-token", validate_token);
 
 app.post("/create_user", create_user);
 app.post("/forgot_password_email", forgot_password_email);
