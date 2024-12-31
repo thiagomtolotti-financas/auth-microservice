@@ -1,6 +1,6 @@
 import { JWT, WithUserId } from "@/globals";
 
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 
 import { UserInactiveError, UserNotFoundError } from "@/errors";
@@ -24,7 +24,6 @@ export default async function validateAuthHeader(
   }
 
   try {
-    // TODO: Handle errors from verify
     const { user_id } = jwt.verify(data, process.env.JWT_SECRET!) as JWT;
 
     const user = await UserModel.findById(user_id);
@@ -36,6 +35,12 @@ export default async function validateAuthHeader(
 
     next();
   } catch (err) {
-    handleError(err as Error, res, 401);
+    if (err instanceof JsonWebTokenError || err instanceof TokenExpiredError) {
+      // Specific handling for JWT errors
+      res.status(401).send("Invalid authorization");
+    } else {
+      // Delegate to your handleError function for other errors
+      handleError(err as Error, res, 401);
+    }
   }
 }
