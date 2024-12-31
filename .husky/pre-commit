@@ -9,7 +9,7 @@ run_all_checks() {
 	# TODO: Log time for each task
 	run_check "Checking for type errors" "npx tsc --noEmit" 
 	run_check "Checking for linting problems" "npm run lint"
-	run_check "Running unit tests" "npm run coverage"
+	run_check "Running unit tests" "npm run test"
 }
 
 clear
