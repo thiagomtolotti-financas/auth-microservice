@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 import sendgrid from "@sendgrid/mail";
 import validateAuthHeader from "./utils/validateAuthHeader";
 import { WithUserId } from "./globals";
-import validate_token from "./routes/validate-token";
+import validate_token from "./routes/validate_token";
 
 const port = 3000;
 const app = express();
@@ -51,7 +51,7 @@ app.get("/", (req, res) => {
 
 app.post("/login", login);
 app.post("/refresh_token", refresh_token);
-app.get("/validate-token", validateAuthHeader, (req, res) =>
+app.get("/validate_token", validateAuthHeader, (req, res) =>
   validate_token(req as Request & WithUserId, res)
 );
 
