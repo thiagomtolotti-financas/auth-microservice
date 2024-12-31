@@ -51,7 +51,9 @@ app.get("/", (req, res) => {
 
 app.post("/login", login);
 app.post("/refresh_token", refresh_token);
-app.get("/validate-token", validate_token);
+app.get("/validate-token", validateAuthHeader, (req, res) =>
+  validate_token(req as Request & WithUserId, res)
+);
 
 app.post("/create_user", create_user);
 app.post("/forgot_password_email", forgot_password_email);
