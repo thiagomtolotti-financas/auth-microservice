@@ -22,9 +22,7 @@ export default async function refresh_token(req: Request, res: Response) {
     const access_token = jwt.sign(
       { user_id: user.id },
       process.env.JWT_SECRET!,
-      {
-        expiresIn: EXPIRATION_TIME_IN_SECONDS,
-      }
+      { expiresIn: EXPIRATION_TIME_IN_SECONDS }
     );
 
     res.send({ access_token });

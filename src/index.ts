@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import login from "./routes/login";
 import refresh_token from "./routes/refresh_token";
 import create_user from "./routes/create_user";
@@ -8,6 +8,9 @@ import change_password from "./routes/change_password";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sendgrid from "@sendgrid/mail";
+import validateAuthHeader from "./utils/validateAuthHeader";
+import { WithUserId } from "./globals";
+import validate_token from "./routes/validate_token";
 
 const port = 3000;
 const app = express();
@@ -31,13 +34,15 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
 	- Heartbeat
 
 	- Login (email, password) -> token
-	- Refresh token (old_token) -> token // With auth header
+	- Refresh token (old_token) -> token
+	- Validate token () -> user_id // With auth header
 
 	- Send Email to create password (email) -> code
 	- Send Forgot Password Email (email) -> code
 
 	- Set/Reset password (code, password)
 	- Change password (new_password) // With auth header
+
 */
 
 app.get("/", (req, res) => {
@@ -46,12 +51,17 @@ app.get("/", (req, res) => {
 
 app.post("/login", login);
 app.post("/refresh_token", refresh_token);
+app.get("/validate_token", validateAuthHeader, (req, res) =>
+  validate_token(req as Request & WithUserId, res)
+);
 
 app.post("/create_user", create_user);
 app.post("/forgot_password_email", forgot_password_email);
 
 app.post("/password", password);
-app.post("/change_password", change_password);
+app.post("/change_password", validateAuthHeader, (req, res) =>
+  change_password(req as Request & WithUserId, res)
+);
 
 app.listen(port, () => {
   console.clear();
