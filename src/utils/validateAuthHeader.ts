@@ -1,13 +1,18 @@
 import { JWT, WithUserId } from "@/globals";
 
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError, verify } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 
 import { UserInactiveError, UserNotFoundError } from "@/errors";
 import handleError from "@/errors/handleError";
 
-import authHeaderSchema from "@/schemas/zod/authHeaderSchema";
 import UserModel from "@/models/UserModel";
+import { z } from "zod";
+
+const authHeaderSchema = z
+  .string()
+  .regex(/^Bearer\s.+$/)
+  .transform((header) => header.replace(/^Bearer\s/, "")); // Extract only the token;
 
 export default async function validateAuthHeader(
   req: Request,
@@ -24,7 +29,7 @@ export default async function validateAuthHeader(
   }
 
   try {
-    const { user_id } = jwt.verify(data, process.env.JWT_SECRET!) as JWT;
+    const { user_id } = verify(data, process.env.JWT_SECRET!) as JWT;
 
     const user = await UserModel.findById(user_id);
 
