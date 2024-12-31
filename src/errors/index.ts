@@ -35,6 +35,11 @@ export const InvalidTokenError = errorFactory(
   "Invalid token"
 );
 
+export const UserInactiveError = errorFactory(
+  "UserInactiveError",
+  "User Inactive"
+);
+
 const errors = [
   UserNotFoundError,
   PasswordNotRegisteredError,
@@ -43,6 +48,7 @@ const errors = [
   ExpiredCodeError,
   UserAlreadyExistsError,
   InvalidTokenError,
+  UserInactiveError,
 ];
 
 export default errors;

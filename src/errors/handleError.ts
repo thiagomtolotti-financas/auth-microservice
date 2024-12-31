@@ -1,9 +1,9 @@
 import { Response } from "express";
 import errors from ".";
 
-export default function handleError(error: Error, res: Response) {
+export default function handleError(error: Error, res: Response, status = 400) {
   if (errors.some((e) => error instanceof e)) {
-    res.status(400).send(error.message);
+    res.status(status).send(error.message);
     return;
   }
 

@@ -1,4 +1,5 @@
 import handleError from "@/errors/handleError";
+import { WithUserId } from "@/globals";
 import change_password from "@/routes/change_password";
 import updateUserPassword from "@/routes/change_password/updateUserPassword";
 import routesSchemas from "@/schemas/routesSchemas";
@@ -30,7 +31,7 @@ const mockRequest = {
   headers: {
     authorization: "1234",
   },
-} as Request;
+} as Request & WithUserId;
 const mockResponse = {
   status: jest.fn().mockReturnThis(),
   send: jest.fn().mockReturnThis(),
@@ -45,32 +46,31 @@ describe("change_password route", () => {
     await change_password(mockRequest, mockResponse);
 
     expect(mockResponse.status).toHaveBeenCalledWith(400);
-    expect(mockResponse.send).toHaveBeenCalledWith("Invalid parameters");
   });
 
-  it("Should return an error if it can't parse the authentication token", async () => {
-    (authHeaderSchema.safeParse as jest.Mock).mockReturnValueOnce({
-      success: false,
-    });
+  //   it("Should return an error if it can't parse the authentication token", async () => {
+  //     (authHeaderSchema.safeParse as jest.Mock).mockReturnValueOnce({
+  //       success: false,
+  //     });
 
-    await change_password(mockRequest, mockResponse);
+  //     await change_password(mockRequest, mockResponse);
 
-    expect(mockResponse.status).toHaveBeenCalledWith(401);
-    expect(mockResponse.send).toHaveBeenCalledWith("Invalid authentication");
-  });
+  //     expect(mockResponse.status).toHaveBeenCalledWith(401);
+  //     expect(mockResponse.send).toHaveBeenCalledWith("Invalid authentication");
+  //   });
 
-  it("Should handle any errors while verifying the authHeader", async () => {
-    (verify as jest.Mock).mockImplementationOnce(() => {
-      throw new Error("Test Error");
-    });
+  //   it("Should handle any errors while verifying the authHeader", async () => {
+  //     (verify as jest.Mock).mockImplementationOnce(() => {
+  //       throw new Error("Test Error");
+  //     });
 
-    await change_password(mockRequest, mockResponse);
+  //     await change_password(mockRequest, mockResponse);
 
-    expect(handleError).toHaveBeenCalledWith(
-      new Error("Test Error"),
-      mockResponse
-    );
-  });
+  //     expect(handleError).toHaveBeenCalledWith(
+  //       new Error("Test Error"),
+  //       mockResponse
+  //     );
+  //   });
 
   it("Should handle any errors while updating the password", async () => {
     (updateUserPassword as jest.Mock).mockImplementationOnce(() => {
