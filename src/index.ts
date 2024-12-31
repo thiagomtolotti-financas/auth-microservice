@@ -12,7 +12,6 @@ import validateAuthHeader from "./utils/validateAuthHeader";
 import { WithUserId } from "./globals";
 import validate_token from "./routes/validate_token";
 
-const port = 3000;
 const app = express();
 
 app.use(express.json());
@@ -63,7 +62,7 @@ app.post("/change_password", validateAuthHeader, (req, res) =>
   change_password(req as Request & WithUserId, res)
 );
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.clear();
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${process.env.PORT}`);
 });
