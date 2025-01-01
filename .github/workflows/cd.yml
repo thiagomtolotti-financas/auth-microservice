@@ -1,0 +1,29 @@
+name: CD (EC2)
+
+on:
+  push:
+    branches:
+      - development
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          git pull
+          npm install
+          npm run build
+
+          pm2 restart auth/dev
+          pm2 save
