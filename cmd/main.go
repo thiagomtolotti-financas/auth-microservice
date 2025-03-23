@@ -19,8 +19,14 @@ func main() {
 
 	routes.RegisterRoutes(router)
 
+	clearConsole()
 	fmt.Println("Server is running on port", port)
 	router.Run(":" + port)
+}
+
+func clearConsole() {
+
+	fmt.Print("\033[H\033[2J")
 }
 
 func loadEnv() {
