@@ -27,3 +27,4 @@ go.work.sum
 coverage
 dist
 node_modules
+tmp
