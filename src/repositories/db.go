@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -15,6 +16,11 @@ func ConnectToDB() {
 
 	client, err := mongo.Connect(options.Client().ApplyURI(uri))
 
+	if err != nil {
+		panic(fmt.Sprintf("Error while connecting to database: %v", err))
+	}
+
+	err = client.Ping(context.Background(), nil)
 	if err != nil {
 		panic(fmt.Sprintf("Error while connecting to database: %v", err))
 	}
