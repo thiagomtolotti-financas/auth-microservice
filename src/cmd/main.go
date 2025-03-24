@@ -1,7 +1,8 @@
 package main
 
 import (
-	"auth-microservice/routes"
+	"auth-microservice/src/repositories"
+	"auth-microservice/src/routes"
 	"fmt"
 	"os"
 
@@ -20,6 +21,9 @@ func main() {
 	routes.RegisterRoutes(router)
 
 	clearConsole()
+
+	repositories.ConnectToDB()
+
 	fmt.Println("Server is running on port", port)
 	router.Run(":" + port)
 }
